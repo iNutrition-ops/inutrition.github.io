@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>iNutrition — Nourish Your Life</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root {
+  --white:#fafaf8;--cream:#f4f2ed;--green:#3a6b4a;--green-light:#5a8f6a;
+  --green-pale:#edf3ee;--green-mid:#c8dccb;--sage:#8aad90;
+  --text:#1e2820;--text-mid:#4a5c50;--text-light:#8a9e8f;--border:#dce8dc;
+  --red:#c0392b;--amber:#b07d2a;
+  --font-serif:'Cormorant Garamond',Georgia,serif;
+  --font-sans:'Jost',sans-serif;
+  --radius:12px;--radius-lg:20px;
+  --shadow:0 4px 24px rgba(58,107,74,0.08);
+  --shadow-lg:0 12px 48px rgba(58,107,74,0.13);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--white);color:var(--text);font-family:var(--font-sans);font-size:16px;line-height:1.6;overflow-x:hidden;}
+
+/* PAGES */
+.page{display:none;min-height:100vh;}.page.active{display:block;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(250,250,248,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);height:72px;display:flex;align-items:center;padding:0 60px;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;}
+.nav-logo img{height:42px;width:auto;object-fit:contain;}
+.nav-logo-text{font-family:var(--font-serif);font-size:26px;font-weight:500;color:var(--green);letter-spacing:0.5px;}
+.nav-logo-text span{color:var(--text);font-weight:300;}
+.nav-links{display:flex;gap:0;list-style:none;}
+.nav-links li a{display:block;padding:0 20px;font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-mid);text-decoration:none;cursor:pointer;transition:color 0.2s;position:relative;}
+.nav-links li a::after{content:'';position:absolute;bottom:-4px;left:20px;right:20px;height:2px;background:var(--green);transform:scaleX(0);transition:transform 0.2s;}
+.nav-links li a:hover,.nav-links li a.active{color:var(--green);}
+.nav-links li a:hover::after,.nav-links li a.active::after{transform:scaleX(1);}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.nav-cta{background:var(--green);color:var(--white)!important;padding:10px 24px!important;border-radius:50px;font-size:13px!important;font-weight:500!important;letter-spacing:0.5px!important;cursor:pointer;text-decoration:none;transition:background 0.2s,transform 0.2s!important;}
+.nav-cta:hover{background:var(--green-light)!important;transform:translateY(-1px);}
+.nav-cta::after{display:none!important;}
+.cart-btn{position:relative;background:var(--green-pale);border:1.5px solid var(--border);border-radius:50px;padding:9px 18px;font-size:13px;font-weight:500;color:var(--green);cursor:pointer;display:flex;align-items:center;gap:7px;transition:all 0.2s;}
+.cart-btn:hover{background:var(--green-mid);}
+.cart-count{background:var(--green);color:var(--white);border-radius:50%;width:18px;height:18px;font-size:11px;font-weight:600;display:none;align-items:center;justify-content:center;}
+.cart-count.show{display:flex;}
+
+/* CART DRAWER */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.cart-overlay.open{opacity:1;pointer-events:all;}
+.cart-drawer{position:fixed;top:0;right:0;bottom:0;width:420px;background:var(--white);z-index:501;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,0.12);}
+.cart-drawer.open{transform:translateX(0);}
+.cart-header{padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.cart-header h3{font-family:var(--font-serif);font-size:24px;font-weight:500;}
+.cart-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--text-light);line-height:1;padding:4px;}
+.cart-close:hover{color:var(--text);}
+.cart-items{flex:1;overflow-y:auto;padding:20px 28px;}
+.cart-empty{text-align:center;padding:60px 20px;color:var(--text-light);}
+.cart-empty-icon{font-size:48px;margin-bottom:16px;}
+.cart-empty p{font-size:15px;}
+.cart-item{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--border);}
+.cart-item:last-child{border-bottom:none;}
+.cart-item-icon{width:56px;height:56px;background:var(--green-pale);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-weight:500;font-size:14px;margin-bottom:3px;}
+.cart-item-meta{font-size:12px;color:var(--text-light);margin-bottom:8px;}
+.cart-item-bottom{display:flex;align-items:center;justify-content:space-between;}
+.cart-item-price{font-family:var(--font-serif);font-size:18px;font-weight:500;color:var(--green);}
+.qty-ctrl{display:flex;align-items:center;gap:8px;}
+.qty-btn{width:26px;height:26px;border:1.5px solid var(--border);background:var(--white);border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--text-mid);transition:all 0.15s;}
+.qty-btn:hover{border-color:var(--green);color:var(--green);}
+.qty-num{font-size:14px;font-weight:500;min-width:16px;text-align:center;}
+.remove-item{background:none;border:none;cursor:pointer;color:var(--text-light);font-size:18px;padding:0 4px;transition:color 0.15s;}
+.remove-item:hover{color:var(--red);}
+.cart-shipping-block{padding:16px 28px;border-top:1px solid var(--border);background:var(--cream);}
+.shipping-label{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-mid);margin-bottom:12px;}
+.shipping-options{display:flex;gap:8px;}
+.ship-opt{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius);cursor:pointer;text-align:center;transition:all 0.2s;background:var(--white);}
+.ship-opt:hover{border-color:var(--sage);}
+.ship-opt.active{border-color:var(--green);background:var(--green-pale);}
+.ship-opt-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;}
+.ship-opt-price{font-size:12px;color:var(--green);font-weight:500;}
+.ship-note{font-size:12px;color:var(--text-light);margin-top:10px;line-height:1.5;}
+.cart-footer{padding:20px 28px;border-top:1px solid var(--border);}
+.cart-row{display:flex;justify-content:space-between;font-size:14px;color:var(--text-mid);margin-bottom:6px;}
+.cart-row.total{font-size:17px;font-weight:600;color:var(--text);padding-top:10px;border-top:1px solid var(--border);margin-top:10px;}
+.cart-checkout{width:100%;background:var(--green);color:var(--white);border:none;border-radius:50px;padding:16px;font-family:var(--font-sans);font-size:15px;font-weight:500;cursor:pointer;transition:all 0.25s;margin-bottom:10px;}
+.cart-checkout:hover{background:var(--green-light);transform:translateY(-1px);}
+.cart-checkout:disabled{background:var(--sage);cursor:not-allowed;transform:none;}
+.yoco-note{text-align:center;font-size:11px;color:var(--text-light);}
+
+/* TOAST */
+.toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--white);padding:12px 24px;border-radius:50px;font-size:14px;font-weight:500;z-index:999;opacity:0;pointer-events:none;transition:all 0.3s;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* HERO */
+.hero{padding-top:72px;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 60px 80px 80px;position:relative;z-index:2;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:28px;}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--green);}
+.hero-title{font-family:var(--font-serif);font-size:clamp(52px,5.5vw,80px);line-height:1.08;font-weight:300;color:var(--text);margin-bottom:24px;letter-spacing:-0.5px;}
+.hero-title em{color:var(--green);font-style:italic;}
+.hero-desc{font-size:17px;font-weight:300;color:var(--text-mid);line-height:1.85;max-width:420px;margin-bottom:48px;}
+.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-size:14px;font-weight:500;letter-spacing:0.5px;padding:16px 32px;border-radius:50px;cursor:pointer;border:none;text-decoration:none;transition:all 0.25s;}
+.btn-primary{background:var(--green);color:var(--white);}
+.btn-primary:hover{background:var(--green-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(58,107,74,0.25);}
+.btn-outline{background:transparent;color:var(--green);border:1.5px solid var(--green);}
+.btn-outline:hover{background:var(--green-pale);transform:translateY(-2px);}
+.hero-trust{display:flex;gap:40px;margin-top:64px;padding-top:40px;border-top:1px solid var(--border);}
+.trust-num{font-family:var(--font-serif);font-size:38px;font-weight:500;color:var(--green);line-height:1;}
+.trust-label{font-size:12px;color:var(--text-light);letter-spacing:0.5px;margin-top:4px;}
+.hero-right{background:var(--green-pale);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.hero-visual{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:60px;position:relative;}
+.hero-leaf-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 40%,#c8dccb 0%,#edf3ee 70%);}
+.hero-card-float{position:relative;z-index:2;background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:36px;max-width:340px;width:100%;}
+.hcard-icon{width:52px;height:52px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:24px;}
+.hcard-title{font-family:var(--font-serif);font-size:22px;font-weight:500;color:var(--text);margin-bottom:10px;}
+.hcard-desc{font-size:14px;color:var(--text-mid);line-height:1.7;margin-bottom:20px;}
+.hcard-pill{display:inline-block;background:var(--green-pale);color:var(--green);font-size:12px;font-weight:500;padding:6px 14px;border-radius:50px;margin-right:6px;margin-bottom:6px;}
+.hero-badge{position:absolute;bottom:60px;right:40px;z-index:3;background:var(--green);color:var(--white);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);font-size:13px;font-weight:500;max-width:180px;text-align:center;}
+.hero-badge-num{font-family:var(--font-serif);font-size:32px;font-weight:500;display:block;margin-bottom:4px;}
+
+/* VIRTUAL BANNER */
+.virtual-banner{background:var(--green);color:var(--white);padding:18px 80px;display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;text-align:center;}
+.virtual-banner-icon{font-size:22px;}
+.virtual-banner-text{font-size:15px;font-weight:300;line-height:1.5;}
+.virtual-banner-text strong{font-weight:600;}
+.virtual-banner-pill{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:50px;padding:6px 16px;font-size:12px;font-weight:500;letter-spacing:0.5px;white-space:nowrap;}
+
+/* SHARED SECTIONS */
+section{padding:100px 80px;}
+.section-label{font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.section-label::before{content:'';width:20px;height:1px;background:var(--green);}
+.section-title{font-family:var(--font-serif);font-size:clamp(38px,4vw,56px);font-weight:300;line-height:1.15;color:var(--text);margin-bottom:16px;}
+.section-title em{color:var(--green);font-style:italic;}
+.section-desc{font-size:16px;color:var(--text-mid);line-height:1.8;max-width:540px;font-weight:300;}
+
+/* SERVICES */
+.services-section{background:var(--cream);}
+.services-header{text-align:center;margin-bottom:64px;}
+.services-header .section-label{justify-content:center;}
+.services-header .section-label::before{display:none;}
+.services-header .section-desc{margin:0 auto;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.service-card{background:var(--white);border-radius:var(--radius-lg);padding:40px 36px;border:1px solid var(--border);transition:transform 0.3s,box-shadow 0.3s;position:relative;overflow:hidden;}
+.service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--green);transform:scaleX(0);transition:transform 0.3s;}
+.service-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.service-card:hover::before{transform:scaleX(1);}
+.service-icon{width:60px;height:60px;background:var(--green-pale);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:24px;}
+.service-name{font-family:var(--font-serif);font-size:24px;font-weight:500;color:var(--text);margin-bottom:12px;}
+.service-desc{font-size:14px;color:var(--text-mid);line-height:1.8;margin-bottom:16px;}
+.service-virtual-tag{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--green);font-weight:500;background:var(--green-pale);padding:5px 12px;border-radius:50px;margin-bottom:18px;}
+.service-link{font-size:13px;font-weight:500;color:var(--green);text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:gap 0.2s;cursor:pointer;}
+.service-link:hover{gap:10px;}
+
+/* ABOUT */
+.about-strip{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.about-visual{background:var(--green-pale);border-radius:var(--radius-lg);height:460px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.about-visual-inner{font-family:var(--font-serif);font-size:120px;color:rgba(58,107,74,0.08);font-weight:300;line-height:1;text-align:center;}
+.about-quote{position:absolute;bottom:32px;left:32px;right:32px;background:var(--white);border-radius:var(--radius);padding:20px 24px;box-shadow:var(--shadow);}
+.about-quote-text{font-family:var(--font-serif);font-size:18px;font-style:italic;color:var(--text);line-height:1.5;margin-bottom:10px;}
+.about-quote-author{font-size:12px;color:var(--text-light);font-weight:500;letter-spacing:1px;text-transform:uppercase;}
+.check-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
+.check-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;color:var(--text-mid);font-weight:300;}
+.check-list li::before{content:'✓';width:22px;height:22px;min-width:22px;background:var(--green-pale);color:var(--green);border-radius:50%;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+
+/* HOW IT WORKS */
+.how-section{background:var(--cream);}
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:56px;}
+.how-step{text-align:center;padding:32px 24px;}
+.how-num{font-family:var(--font-serif);font-size:48px;font-weight:300;color:var(--green-mid);margin-bottom:16px;line-height:1;}
+.how-icon{font-size:32px;margin-bottom:14px;}
+.how-title{font-family:var(--font-serif);font-size:20px;font-weight:500;color:var(--text);margin-bottom:8px;}
+.how-desc{font-size:13px;color:var(--text-mid);line-height:1.7;}
+.how-arrow{display:flex;align-items:center;justify-content:center;padding-top:48px;font-size:24px;color:var(--green-mid);}
+
+/* SHOP */
+.shop-hero{background:var(--green-pale);padding:140px 80px 80px;text-align:center;border-bottom:1px solid var(--border);}
+.shop-filters{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:36px;}
+.filter-btn{padding:10px 24px;border-radius:50px;border:1.5px solid var(--border);background:var(--white);font-family:var(--font-sans);font-size:13px;font-weight:500;color:var(--text-mid);cursor:pointer;transition:all 0.2s;}
+.filter-btn:hover,.filter-btn.active{background:var(--green);color:var(--white);border-color:var(--green);}
+.shop-grid-section{padding:80px;}
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.shop-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:transform 0.3s,box-shadow 0.3s;}
+.shop-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);}
+.shop-img{height:200px;background:var(--green-pale);display:flex;align-items:center;justify-content:center;font-size:60px;position:relative;}
+.shop-badge-tag{position:absolute;top:14px;left:14px;background:var(--green);color:var(--white);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:50px;}
+.shop-info{padding:22px 26px;}
+.shop-cat{font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);margin-bottom:5px;}
+.shop-name{font-family:var(--font-serif);font-size:20px;font-weight:500;color:var(--text);margin-bottom:7px;}
+.shop-desc{font-size:13px;color:var(--text-light);line-height:1.6;margin-bottom:14px;}
+.stock-bar{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.stock-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.stock-dot.in{background:#2ecc71;}.stock-dot.low{background:#f39c12;}.stock-dot.out{background:#e74c3c;}
+.stock-text{font-size:12px;font-weight:500;}
+.stock-text.in{color:#27ae60;}.stock-text.low{color:#e67e22;}.stock-text.out{color:#c0392b;}
+.stock-track{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.stock-fill{height:100%;border-radius:2px;}
+.stock-fill.in{background:#2ecc71;}.stock-fill.low{background:#f39c12;}
+.shop-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.shop-price{font-family:var(--font-serif);font-size:21px;font-weight:500;color:var(--green);}
+.shop-price small{font-family:var(--font-sans);font-size:12px;color:var(--text-light);font-weight:300;}
+.shop-add{background:var(--green-pale);color:var(--green);border:none;border-radius:50px;padding:10px 18px;font-family:var(--font-sans);font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.shop-add:hover{background:var(--green);color:var(--white);}
+.shop-request{background:var(--cream);color:var(--text-mid);border:1.5px solid var(--border);border-radius:50px;padding:9px 16px;font-family:var(--font-sans);font-size:12px;font-weight:500;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.shop-request:hover{border-color:var(--green);color:var(--green);}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:600;opacity:0;pointer-events:none;transition:opacity 0.3s;display:flex;align-items:center;justify-content:center;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-box{background:var(--white);border-radius:var(--radius-lg);padding:44px;max-width:480px;width:90%;box-shadow:var(--shadow-lg);transform:translateY(20px);transition:transform 0.3s;max-height:90vh;overflow-y:auto;}
+.modal-overlay.open .modal-box{transform:translateY(0);}
+.modal-icon{font-size:40px;margin-bottom:16px;}
+.modal-title{font-family:var(--font-serif);font-size:26px;font-weight:500;margin-bottom:8px;}
+.modal-sub{font-size:14px;color:var(--text-light);margin-bottom:28px;line-height:1.6;}
+.modal-field{margin-bottom:16px;}
+.modal-field label{display:block;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-mid);margin-bottom:7px;}
+.modal-field input,.modal-field select,.modal-field textarea{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:var(--radius);padding:13px 16px;font-family:var(--font-sans);font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;resize:none;}
+.modal-field input:focus,.modal-field select:focus,.modal-field textarea:focus{border-color:var(--green);}
+.modal-field input::placeholder,.modal-field textarea::placeholder{color:var(--text-light);}
+.modal-btns{display:flex;gap:12px;margin-top:8px;}
+.modal-submit{flex:1;background:var(--green);color:var(--white);border:none;border-radius:50px;padding:14px;font-family:var(--font-sans);font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s;}
+.modal-submit:hover{background:var(--green-light);}
+.modal-cancel{background:none;border:1.5px solid var(--border);border-radius:50px;padding:14px 20px;font-family:var(--font-sans);font-size:14px;color:var(--text-mid);cursor:pointer;transition:all 0.2s;}
+.modal-cancel:hover{border-color:var(--text-mid);}
+
+/* VIDEOS */
+.video-hero{background:var(--green-pale);padding:140px 80px 80px;text-align:center;border-bottom:1px solid var(--border);}
+.video-section{padding:80px;}
+.featured-video{background:var(--text);border-radius:var(--radius-lg);height:460px;display:flex;align-items:center;justify-content:center;margin-bottom:60px;position:relative;overflow:hidden;cursor:pointer;}
+.featured-video-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1e2820 0%,#3a6b4a 100%);}
+.play-btn{position:relative;z-index:2;width:80px;height:80px;background:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:transform 0.3s;}
+.featured-video:hover .play-btn{transform:scale(1.1);}
+.play-btn::after{content:'';border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:22px solid var(--green);margin-left:4px;}
+.featured-video-label{position:absolute;bottom:32px;left:32px;z-index:2;color:var(--white);}
+.featured-video-label .episode{font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.6;margin-bottom:6px;}
+.featured-video-label .title{font-family:var(--font-serif);font-size:26px;font-weight:300;}
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.video-card{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:transform 0.3s,box-shadow 0.3s;}
+.video-card:hover{transform:translateY(-4px);box-shadow:var(--shadow);}
+.video-thumb{height:180px;background:linear-gradient(135deg,#edf3ee,#c8dccb);display:flex;align-items:center;justify-content:center;position:relative;}
+.video-thumb .mini-play{width:48px;height:48px;background:var(--white);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;position:absolute;}
+.video-card:hover .mini-play{opacity:1;}
+.video-thumb .mini-play::after{content:'';border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:13px solid var(--green);margin-left:3px;}
+.video-thumb-icon{font-size:40px;}
+.video-info{padding:18px 20px;background:var(--white);}
+.video-ep{font-size:11px;color:var(--sage);font-weight:500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
+.video-title{font-family:var(--font-serif);font-size:18px;font-weight:500;color:var(--text);margin-bottom:6px;}
+.video-meta{font-size:12px;color:var(--text-light);}
+
+/* CONTACT */
+.contact-hero{background:var(--green-pale);padding:140px 80px 80px;text-align:center;border-bottom:1px solid var(--border);}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;padding:80px;align-items:start;}
+.contact-info-item{display:flex;gap:16px;align-items:flex-start;margin-bottom:36px;padding-bottom:36px;border-bottom:1px solid var(--border);}
+.contact-info-item:last-child{border-bottom:none;}
+.contact-icon{width:48px;height:48px;min-width:48px;background:var(--green-pale);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.contact-info-label{font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--sage);margin-bottom:4px;}
+.contact-info-val{font-size:16px;color:var(--text);font-weight:300;}
+.contact-info-sub{font-size:13px;color:var(--text-light);margin-top:2px;}
+.contact-form-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:48px;box-shadow:var(--shadow);}
+.form-title{font-family:var(--font-serif);font-size:30px;font-weight:400;color:var(--text);margin-bottom:8px;}
+.form-sub{font-size:14px;color:var(--text-light);margin-bottom:36px;font-weight:300;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{margin-bottom:20px;}
+.form-group label{display:block;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--text-mid);margin-bottom:8px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--cream);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 18px;font-family:var(--font-sans);font-size:15px;color:var(--text);outline:none;transition:border-color 0.2s,background 0.2s;resize:none;}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--green);background:var(--white);}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--text-light);}
+.form-submit{width:100%;background:var(--green);color:var(--white);border:none;border-radius:50px;padding:18px 40px;font-family:var(--font-sans);font-size:15px;font-weight:500;cursor:pointer;transition:all 0.25s;letter-spacing:0.5px;margin-top:8px;}
+.form-submit:hover{background:var(--green-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(58,107,74,0.25);}
+.faq-strip{background:var(--cream);padding:80px;}
+.faq-inner{max-width:700px;margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--border);padding:24px 0;cursor:pointer;}
+.faq-q{display:flex;align-items:center;justify-content:space-between;font-family:var(--font-serif);font-size:20px;font-weight:400;color:var(--text);}
+.faq-q::after{content:'+';color:var(--green);font-size:22px;transition:transform 0.2s;}
+.faq-item.open .faq-q::after{transform:rotate(45deg);}
+.faq-a{display:none;font-size:15px;color:var(--text-mid);line-height:1.8;margin-top:14px;font-weight:300;}
+.faq-item.open .faq-a{display:block;}
+
+/* FOOTER */
+footer{background:var(--text);color:rgba(255,255,255,0.7);padding:64px 80px 32px;}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;}
+.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.footer-logo img{height:36px;width:auto;object-fit:contain;filter:brightness(0) invert(1);opacity:0.9;}
+.footer-logo-text{font-family:var(--font-serif);font-size:26px;font-weight:500;color:var(--white);}
+.footer-logo-text span{color:var(--sage);}
+.footer-tagline{font-size:14px;line-height:1.8;max-width:240px;font-weight:300;}
+.footer-heading{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--white);margin-bottom:18px;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-links li a{color:rgba(255,255,255,0.55);font-size:14px;text-decoration:none;transition:color 0.2s;cursor:pointer;}
+.footer-links li a:hover{color:var(--white);}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:32px;border-top:1px solid rgba(255,255,255,0.08);}
+.footer-copy{font-size:13px;}
+.footer-socials{display:flex;gap:12px;}
+.social-dot{width:36px;height:36px;border:1px solid rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:border-color 0.2s;}
+.social-dot:hover{border-color:var(--sage);}
+
+/* LOGO UPLOAD HINT */
+.logo-hint{display:none;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.hero-eyebrow{animation:fadeUp 0.7s 0.1s both;}
+.hero-title{animation:fadeUp 0.7s 0.25s both;}
+.hero-desc{animation:fadeUp 0.7s 0.4s both;}
+.hero-buttons{animation:fadeUp 0.7s 0.5s both;}
+.hero-trust{animation:fadeUp 0.7s 0.65s both;}
+</style>
+</head>
+<body>
+
+<!-- CART OVERLAY -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close" onclick="closeCart()">×</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Your cart is empty</p></div>
+  </div>
+  <div class="cart-shipping-block" id="cartShippingBlock" style="display:none;">
+    <div class="shipping-label">Delivery Method</div>
+    <div class="shipping-options">
+      <div class="ship-opt active" id="shipDelivery" onclick="selectShipping('delivery')">
+        <div class="ship-opt-title">🚚 Delivery</div><div class="ship-opt-price">+ R80</div>
+      </div>
+      <div class="ship-opt" id="shipPickup" onclick="selectShipping('pickup')">
+        <div class="ship-opt-title">🏠 Pick-up</div><div class="ship-opt-price">Free</div>
+      </div>
+    </div>
+    <div class="ship-note" id="shipNote">We'll email you to confirm your delivery address and estimated arrival.</div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-row"><span>Subtotal</span><span id="cartSubtotal">R0</span></div>
+    <div class="cart-row" id="shippingRow"><span>Shipping</span><span id="cartShipping2">R80</span></div>
+    <div class="cart-row total"><span>Total</span><span id="cartTotal">R0</span></div>
+    <br/>
+    <button class="cart-checkout" onclick="handleCheckout()">Pay with Yoco →</button>
+    <div class="yoco-note">🔒 Secure payment · Cards, EFT & SnapScan</div>
+  </div>
+</div>
+
+<!-- OUT OF STOCK REQUEST MODAL -->
+<div class="modal-overlay" id="requestModal">
+  <div class="modal-box">
+    <div class="modal-icon">📦</div>
+    <div class="modal-title" id="modalTitle">Request this supplement</div>
+    <div class="modal-sub">This item is out of stock. Leave your details and we'll order it and contact you when it's ready.</div>
+    <div class="modal-field"><label>Your Name</label><input type="text" id="reqName" placeholder="Jane Smith"/></div>
+    <div class="modal-field"><label>Email Address</label><input type="email" id="reqEmail" placeholder="jane@example.com"/></div>
+    <div class="modal-field"><label>Phone (optional)</label><input type="tel" id="reqPhone" placeholder="+27 ..."/></div>
+    <div class="modal-field"><label>Notes</label><textarea rows="2" id="reqNote" placeholder="e.g. preferred quantity..."></textarea></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal('requestModal')">Cancel</button>
+      <button class="modal-submit" onclick="submitRequest()">Send Request →</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONSULTATION REQUEST MODAL -->
+<div class="modal-overlay" id="consultModal">
+  <div class="modal-box">
+    <div class="modal-icon">📅</div>
+    <div class="modal-title" id="consultModalTitle">Request an Appointment</div>
+    <div class="modal-sub">Fill in your details and we'll confirm your appointment within 1 business day. Available <strong>in-person in Cape Town</strong> or <strong>virtually nationwide</strong>. Consultations are invoiced and claimable from medical aid.</div>
+    <div class="modal-field"><label>Your Name</label><input type="text" id="cName" placeholder="Jane Smith"/></div>
+    <div class="modal-field"><label>Email Address</label><input type="email" id="cEmail" placeholder="jane@example.com"/></div>
+    <div class="modal-field"><label>Phone / WhatsApp</label><input type="tel" id="cPhone" placeholder="+27 ..."/></div>
+    <div class="modal-field"><label>Consultation type</label>
+      <select id="cType">
+        <option value="">Select...</option>
+        <option>In-person (Cape Town)</option>
+        <option>Virtual (video call)</option>
+      </select>
+    </div>
+    <div class="modal-field"><label>Preferred time</label><input type="text" id="cTime" placeholder="e.g. Weekday mornings, or a specific date"/></div>
+    <div class="modal-field"><label>Tell us about your goals</label><textarea rows="2" id="cNote" placeholder="e.g. breastfeeding support, weight management..."></textarea></div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal('consultModal')">Cancel</button>
+      <button class="modal-submit" onclick="submitConsult()">Send Request →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <!-- LOGO: Replace the src below with your logo file path, or remove the <img> tag to use text only -->
+    <img id="navLogoImg" src="" alt="iNutrition logo" style="display:none;" onerror="this.style.display='none'"/>
+    <span class="nav-logo-text" id="navLogoText">i<span>Nutrition</span></span>
+  </div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a onclick="showPage('videos')" id="nav-videos">Videos</a></li>
+    <li><a onclick="showPage('shop')" id="nav-shop">Shop</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="openCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    <a class="nav-cta" onclick="openConsultModal('Appointment Request')">Book Consultation</a>
+  </div>
+</nav>
+
+<!-- ══════════ HOME ══════════ -->
+<div id="page-home" class="page active">
+
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Registered Dietitian & Lactation Consultant</div>
+      <h1 class="hero-title">Nourish your body,<br><em>nourish your life.</em></h1>
+      <p class="hero-desc">Evidence-based nutrition guidance tailored to you — from everyday eating to new motherhood. We make healthy living feel natural, joyful, and sustainable.</p>
+      <div class="hero-buttons">
+        <a class="btn btn-primary" onclick="openConsultModal('Appointment Request')">Book a Consultation →</a>
+        <a class="btn btn-outline" onclick="showPage('videos')">Watch Free Videos</a>
+      </div>
+      <div class="hero-trust">
+        <div><div class="trust-num">500+</div><div class="trust-label">Clients Helped</div></div>
+        <div><div class="trust-num">10+</div><div class="trust-label">Years Experience</div></div>
+        <div><div class="trust-num">4.9★</div><div class="trust-label">Average Rating</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-leaf-bg"></div>
+      <div class="hero-visual">
+        <div class="hero-card-float">
+          <div class="hcard-icon">🌿</div>
+          <div class="hcard-title">Your personalised plan</div>
+          <div class="hcard-desc">We assess your unique needs and craft a nutrition strategy that fits your lifestyle — no fads, just science.</div>
+          <span class="hcard-pill">Dietitian</span>
+          <span class="hcard-pill">Lactation</span>
+          <span class="hcard-pill">Meal Plans</span>
+          <span class="hcard-pill">🖥️ Virtual</span>
+        </div>
+        <div class="hero-badge"><span class="hero-badge-num">🤱</span>Lactation Specialist on Team</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIRTUAL BANNER -->
+  <div class="virtual-banner">
+    <span class="virtual-banner-icon">🖥️</span>
+    <div class="virtual-banner-text">
+      <strong>Virtual consultations available nationwide.</strong> Can't make it to Cape Town? No problem — we offer secure video consultations so you can access expert nutrition care from anywhere in South Africa.
+    </div>
+    <span class="virtual-banner-pill">In-person · Cape Town</span>
+    <span class="virtual-banner-pill">Virtual · Nationwide</span>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="services-section">
+    <div class="services-header">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">Our <em>Services</em></h2>
+      <p class="section-desc">Holistic nutrition care designed to meet you exactly where you are in your health journey — in person or online.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🥗</div>
+        <div class="service-name">Dietitian Consultations</div>
+        <div class="service-desc">One-on-one sessions with a registered dietitian. We evaluate your health goals, dietary needs, and lifestyle to build a practical, evidence-based plan. Claimable from most medical aids.</div>
+        <div class="service-virtual-tag">🖥️ In-person & virtual available</div>
+        <a class="service-link" onclick="openConsultModal('Dietitian Consultation')">Request Appointment →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🤱</div>
+        <div class="service-name">Lactation Consultations</div>
+        <div class="service-desc">Expert support for new and expecting mothers. We guide you through breastfeeding, latching, milk supply, and postpartum nutrition with compassion — from the comfort of your home.</div>
+        <div class="service-virtual-tag">🖥️ In-person & virtual available</div>
+        <a class="service-link" onclick="openConsultModal('Lactation Consultation')">Request Appointment →</a>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📋</div>
+        <div class="service-name">Personalised Meal Plans</div>
+        <div class="service-desc">Customised weekly meal plans tailored to your preferences, health conditions, schedule, and family. Real food, real flavour, real results. Delivered digitally.</div>
+        <div class="service-virtual-tag">📧 Delivered to your inbox</div>
+        <a class="service-link" onclick="showPage('shop')">View Plans in Shop →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div style="text-align:center;margin-bottom:0;">
+      <div class="section-label" style="justify-content:center;"><span></span>Virtual Consultations</div>
+      <h2 class="section-title">How a virtual<br><em>consultation works</em></h2>
+      <p class="section-desc" style="margin:0 auto;">Getting expert nutrition support from home is simple — here's what to expect.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <div class="how-icon">📋</div>
+        <div class="how-title">Request & Book</div>
+        <div class="how-desc">Fill in the booking form with your goals and preferred time. We confirm within 1 business day.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <div class="how-icon">📝</div>
+        <div class="how-title">Intake Form</div>
+        <div class="how-desc">You receive a short questionnaire about your health history and eating habits before your session.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <div class="how-icon">🖥️</div>
+        <div class="how-title">Video Session</div>
+        <div class="how-desc">Join your 60-minute session via secure video call — no software to install, just a link.</div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">04</div>
+        <div class="how-icon">🌿</div>
+        <div class="how-title">Your Plan</div>
+        <div class="how-desc">Receive your personalised plan digitally. We follow up and stay available between sessions.</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:48px;">
+      <a class="btn btn-primary" onclick="openConsultModal('Virtual Consultation')">Book a Virtual Consultation →</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="about-strip">
+      <div class="about-visual">
+        <div class="about-visual-inner">🌱</div>
+        <div class="about-quote">
+          <div class="about-quote-text">"Every person deserves to feel well — and the right nutrition makes that possible."</div>
+          <div class="about-quote-author">— iNutrition Philosophy</div>
+        </div>
+      </div>
+      <div class="about-content">
+        <div class="section-label">Our Approach</div>
+        <h2 class="section-title">Science-backed care,<br><em>human warmth.</em></h2>
+        <p class="section-desc" style="margin-bottom:28px;">At iNutrition, we believe that healthy eating should never feel like punishment. Our registered dietitians and lactation consultants take a whole-person approach — because food is deeply personal.</p>
+        <ul class="check-list">
+          <li>Registered & HPCSA-accredited dietitians</li>
+          <li>Evidence-based, personalised nutrition plans</li>
+          <li>In-person (Cape Town) and virtual consultations nationwide</li>
+          <li>Specialist support for pregnancy & breastfeeding</li>
+          <li>Consultations claimable from most medical aids</li>
+          <li>Supplements quality-verified by our dietitians</li>
+          <li>Ongoing support between sessions</li>
+        </ul>
+        <a class="btn btn-primary" onclick="openConsultModal('Appointment Request')">Start Your Journey →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">
+          <img id="footerLogoImg" src="" alt="" style="display:none;"/>
+          <span class="footer-logo-text">i<span>Nutrition</span></span>
+        </div>
+        <div class="footer-tagline">Registered dietitians and lactation specialists. In-person in Cape Town, and virtually nationwide across South Africa.</div>
+      </div>
+      <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a onclick="openConsultModal('Dietitian Consultation')">Dietitian Consult</a></li><li><a onclick="openConsultModal('Lactation Consultation')">Lactation Consult</a></li><li><a onclick="showPage('shop')">Meal Plans</a></li><li><a onclick="showPage('shop')">Supplements</a></li></ul></div>
+      <div><div class="footer-heading">Resources</div><ul class="footer-links"><li><a onclick="showPage('videos')">Free Videos</a></li><li><a onclick="showPage('shop')">Shop</a></li><li><a onclick="showPage('contact')">FAQ</a></li></ul></div>
+      <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a>hello@inutrition.co.za</a></li><li><a>Cape Town · Nationwide Virtual</a></li><li><a onclick="showPage('contact')">Get in Touch</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">© 2025 iNutrition. All rights reserved.</span><div class="footer-socials"><div class="social-dot">📘</div><div class="social-dot">📸</div><div class="social-dot">▶️</div></div></div>
+  </footer>
+</div>
+
+<!-- ══════════ VIDEOS ══════════ -->
+<div id="page-videos" class="page">
+  <div class="video-hero">
+    <div class="section-label" style="justify-content:center;">Free Resources</div>
+    <h1 class="section-title">Nutrition <em>Videos</em></h1>
+    <p class="section-desc" style="margin:0 auto;">Watch our free library of expert-led nutrition and wellness videos — from breastfeeding basics to balanced eating for the whole family.</p>
+  </div>
+  <div class="video-section">
+    <div class="featured-video">
+      <div class="featured-video-bg"></div>
+      <div class="play-btn"></div>
+      <div class="featured-video-label">
+        <div class="episode">Featured · Episode 01</div>
+        <div class="title">Getting Started: What Does a Dietitian Actually Do?</div>
+      </div>
+    </div>
+    <div style="margin-bottom:40px;">
+      <div class="section-label">All Episodes</div>
+      <h2 class="section-title" style="font-size:36px;">Browse our <em>library</em></h2>
+    </div>
+    <div class="video-grid">
+      <div class="video-card"><div class="video-thumb"><div class="video-thumb-icon">🍼</div><div class="mini-play"></div></div><div class="video-info"><div class="video-ep">Lactation · Ep 02</div><div class="video-title">Breastfeeding Basics: Latch, Positions & Milk Supply</div><div class="video-meta">18 min · Beginner</div></div></div>
+      <div class="video-card"><div class="video-thumb" style="background:linear-gradient(135deg,#f4f2ed,#dce8dc);"><div class="video-thumb-icon">🥦</div><div class="mini-play"></div></div><div class="video-info"><div class="video-ep">Nutrition · Ep 03</div><div class="video-title">Building a Balanced Plate — The Simple Way</div><div class="video-meta">12 min · Beginner</div></div></div>
+      <div class="video-card"><div class="video-thumb" style="background:linear-gradient(135deg,#edf3ee,#8aad9040);"><div class="video-thumb-icon">🤰</div><div class="mini-play"></div></div><div class="video-info"><div class="video-ep">Pregnancy · Ep 04</div><div class="video-title">Eating Well During Pregnancy: Trimester by Trimester</div><div class="video-meta">22 min · All levels</div></div></div>
+      <div class="video-card"><div class="video-thumb" style="background:linear-gradient(135deg,#f4f2ed,#c8dccb);"><div class="video-thumb-icon">⚖️</div><div class="mini-play"></div></div><div class="video-info"><div class="video-ep">Weight · Ep 05</div><div class="video-title">Sustainable Weight Management Without Dieting</div><div class="video-meta">16 min · Intermediate</div></div></div>
+      <div class="video-card"><div class="video-thumb" style="background:linear-gradient(135deg,#edf3ee,#f4f2ed);"><div class="video-thumb-icon">👶</div><div class="mini-play"></div></div><div class="video-info"><div class="video-ep">Family · Ep 06</div><div class="video-title">Introducing Solids: A Step-by-Step Guide</div><div class="video-meta">20 min · Beginner</div></div></div>
+      <div class="video-card"><div class="video-thumb" style="background:linear-gradient(135deg,#dce8dc,#edf3ee);"><div class="video-thumb-icon">💊</div><div class="mini-play"></div></div><div class="video-info"><div class="video-ep">Supplements · Ep 07</div><div class="video-title">Which Supplements Do You Actually Need?</div><div class="video-meta">14 min · All levels</div></div></div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-top">
+      <div><div class="footer-logo"><span class="footer-logo-text">i<span>Nutrition</span></span></div><div class="footer-tagline">Registered dietitians and lactation specialists. In-person in Cape Town, and virtually nationwide.</div></div>
+      <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a onclick="openConsultModal('Dietitian Consultation')">Dietitian Consult</a></li><li><a onclick="openConsultModal('Lactation Consultation')">Lactation Consult</a></li><li><a onclick="showPage('shop')">Meal Plans</a></li></ul></div>
+      <div><div class="footer-heading">Navigate</div><ul class="footer-links"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('shop')">Shop</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul></div>
+      <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a>hello@inutrition.co.za</a></li><li><a>Cape Town · Nationwide Virtual</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">© 2025 iNutrition. All rights reserved.</span><div class="footer-socials"><div class="social-dot">📘</div><div class="social-dot">📸</div><div class="social-dot">▶️</div></div></div>
+  </footer>
+</div>
+
+<!-- ══════════ SHOP ══════════ -->
+<div id="page-shop" class="page">
+  <div class="shop-hero">
+    <div class="section-label" style="justify-content:center;">iNutrition Store</div>
+    <h1 class="section-title">Our <em>Products</em></h1>
+    <p class="section-desc" style="margin:0 auto 32px;">Supplements, meal plans, and nutrition guidelines — all curated and approved by our registered dietitians.</p>
+    <div class="shop-filters">
+      <button class="filter-btn active" onclick="filterShop('all',this)">All Products</button>
+      <button class="filter-btn" onclick="filterShop('supplement',this)">Supplements</button>
+      <button class="filter-btn" onclick="filterShop('mealplan',this)">Meal Plans</button>
+      <button class="filter-btn" onclick="filterShop('guideline',this)">Guidelines</button>
+      <button class="filter-btn" onclick="filterShop('consultation',this)">Consultations</button>
+    </div>
+  </div>
+  <div class="shop-grid-section">
+    <div style="background:var(--green-pale);border:1px solid var(--green-mid);border-radius:var(--radius);padding:16px 24px;margin-bottom:36px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <span style="font-size:20px;">🚚</span>
+      <div style="flex:1;"><strong style="font-size:14px;color:var(--green);">Supplements: R80 flat-rate delivery nationwide</strong><span style="font-size:13px;color:var(--text-mid);margin-left:12px;">or free pick-up in Cape Town</span></div>
+      <span style="font-size:13px;color:var(--text-light);">PDFs & meal plans delivered by email instantly</span>
+    </div>
+    <div class="shop-grid" id="shop-grid">
+
+      <!-- CONSULTATIONS -->
+      <div class="shop-card" data-cat="consultation">
+        <div class="shop-img" style="background:#edf5f0;"><span>🥗</span><span class="shop-badge-tag">Medical Aid</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Consultation</div>
+          <div class="shop-name">Dietitian Initial Consult</div>
+          <div class="shop-desc">60-min session. Full health assessment and personalised plan. In-person (Cape Town) or virtual nationwide.</div>
+          <div style="background:var(--green-pale);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;">
+            💳 <strong style="color:var(--green);">Medical aid claimable</strong> — invoiced after your session &nbsp;·&nbsp; 🖥️ Virtual available
+          </div>
+          <div class="shop-footer">
+            <div class="shop-price">R850 <small>/ session</small></div>
+            <button class="shop-add" onclick="openConsultModal('Dietitian Initial Consultation')">Request Booking</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="consultation">
+        <div class="shop-img" style="background:#f4f2ed;"><span>🤱</span><span class="shop-badge-tag">Medical Aid</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Consultation</div>
+          <div class="shop-name">Lactation Consultation</div>
+          <div class="shop-desc">Expert breastfeeding support for new and expecting mothers. Includes follow-up resources. In-person or virtual.</div>
+          <div style="background:var(--green-pale);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;">
+            💳 <strong style="color:var(--green);">Medical aid claimable</strong> — invoiced after your session &nbsp;·&nbsp; 🖥️ Virtual available
+          </div>
+          <div class="shop-footer">
+            <div class="shop-price">R750 <small>/ session</small></div>
+            <button class="shop-add" onclick="openConsultModal('Lactation Consultation')">Request Booking</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEAL PLANS -->
+      <div class="shop-card" data-cat="mealplan">
+        <div class="shop-img" style="background:#edf5f0;"><span>📋</span><span class="shop-badge-tag">New</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Meal Plan · PDF Download</div>
+          <div class="shop-name">7-Day Family Meal Plan</div>
+          <div class="shop-desc">A full week of balanced, family-friendly meals with shopping list. Delivered to your inbox instantly.</div>
+          <div class="stock-bar"><div class="stock-dot in"></div><span class="stock-text in">In stock — digital download</span></div>
+          <div class="shop-footer">
+            <div class="shop-price">R199 <small>once-off</small></div>
+            <button class="shop-add" onclick="addToCart('7-Day Family Meal Plan','mealplan',199,'📋','PDF download')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="mealplan">
+        <div class="shop-img" style="background:#f0f4ee;"><span>🤰</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Meal Plan · PDF Download</div>
+          <div class="shop-name">Pregnancy Nutrition Plan</div>
+          <div class="shop-desc">Trimester-specific meal plans supporting mother and baby through all stages. Instant delivery.</div>
+          <div class="stock-bar"><div class="stock-dot in"></div><span class="stock-text in">In stock — digital download</span></div>
+          <div class="shop-footer">
+            <div class="shop-price">R249 <small>once-off</small></div>
+            <button class="shop-add" onclick="addToCart('Pregnancy Nutrition Plan','mealplan',249,'🤰','PDF download')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="mealplan">
+        <div class="shop-img" style="background:#eef5f0;"><span>⚖️</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Meal Plan · PDF Download</div>
+          <div class="shop-name">Weight Management Plan</div>
+          <div class="shop-desc">A 4-week structured meal plan for sustainable healthy weight management. No crash dieting.</div>
+          <div class="stock-bar"><div class="stock-dot in"></div><span class="stock-text in">In stock — digital download</span></div>
+          <div class="shop-footer">
+            <div class="shop-price">R349 <small>4-week plan</small></div>
+            <button class="shop-add" onclick="addToCart('Weight Management Plan','mealplan',349,'⚖️','PDF download')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUPPLEMENTS -->
+      <div class="shop-card" data-cat="supplement">
+        <div class="shop-img" style="background:#f4f5ee;"><span>💊</span><span class="shop-badge-tag">Dietitian-Approved</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Supplement</div>
+          <div class="shop-name">Prenatal Omega-3 DHA</div>
+          <div class="shop-desc">High-quality DHA for pregnancy & breastfeeding. Supports brain development and maternal health.</div>
+          <div class="stock-bar">
+            <div class="stock-dot in"></div><span class="stock-text in">In stock</span>
+            <div class="stock-track"><div class="stock-fill in" style="width:70%"></div></div>
+            <span style="font-size:12px;color:var(--text-light);">7 left</span>
+          </div>
+          <div class="shop-footer">
+            <div class="shop-price">R320 <small>/ 60 caps</small></div>
+            <button class="shop-add" onclick="addToCart('Prenatal Omega-3 DHA','supplement',320,'💊','60 capsules')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="supplement">
+        <div class="shop-img" style="background:#eef4ee;"><span>🌿</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Supplement</div>
+          <div class="shop-name">Daily Greens Blend</div>
+          <div class="shop-desc">A whole-food supplement to boost your daily vegetable intake. Dietitian-formulated blend.</div>
+          <div class="stock-bar">
+            <div class="stock-dot low"></div><span class="stock-text low">Low stock</span>
+            <div class="stock-track"><div class="stock-fill low" style="width:20%"></div></div>
+            <span style="font-size:12px;color:var(--text-light);">2 left</span>
+          </div>
+          <div class="shop-footer">
+            <div class="shop-price">R380 <small>/ 30 servings</small></div>
+            <button class="shop-add" onclick="addToCart('Daily Greens Blend','supplement',380,'🌿','30 servings')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="supplement">
+        <div class="shop-img" style="background:#f2f4ee;"><span>🦴</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Supplement</div>
+          <div class="shop-name">Calcium & Vitamin D3</div>
+          <div class="shop-desc">Essential bone health support for pregnant and breastfeeding mothers. Easy-absorb formula.</div>
+          <div class="stock-bar"><div class="stock-dot out"></div><span class="stock-text out">Out of stock — we'll order it for you</span></div>
+          <div class="shop-footer">
+            <div class="shop-price">R295 <small>/ 90 caps</small></div>
+            <button class="shop-request" onclick="openRequestModal('Calcium & Vitamin D3')">Request Item</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="supplement">
+        <div class="shop-img" style="background:#f0f4f0;"><span>🍃</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Supplement</div>
+          <div class="shop-name">Iron + Folate Complex</div>
+          <div class="shop-desc">For pregnancy and women of reproductive age. Gentle on the stomach, fast-absorbing formula.</div>
+          <div class="stock-bar"><div class="stock-dot out"></div><span class="stock-text out">Out of stock — we'll order it for you</span></div>
+          <div class="shop-footer">
+            <div class="shop-price">R260 <small>/ 60 caps</small></div>
+            <button class="shop-request" onclick="openRequestModal('Iron + Folate Complex')">Request Item</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUIDELINES -->
+      <div class="shop-card" data-cat="guideline">
+        <div class="shop-img" style="background:#f2f4ee;"><span>📖</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Guideline · PDF Download</div>
+          <div class="shop-name">Breastfeeding Nutrition Guide</div>
+          <div class="shop-desc">Everything a breastfeeding mother needs to know about nutrition. Comprehensive, practical guide.</div>
+          <div class="stock-bar"><div class="stock-dot in"></div><span class="stock-text in">In stock — digital download</span></div>
+          <div class="shop-footer">
+            <div class="shop-price">R99 <small>PDF download</small></div>
+            <button class="shop-add" onclick="addToCart('Breastfeeding Nutrition Guide','guideline',99,'📖','PDF download')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shop-card" data-cat="guideline">
+        <div class="shop-img" style="background:#edf2f0;"><span>🍽️</span></div>
+        <div class="shop-info">
+          <div class="shop-cat">Guideline · PDF Download</div>
+          <div class="shop-name">Healthy Eating Starter Kit</div>
+          <div class="shop-desc">Portion guides, food groups, label-reading tips, and a pantry checklist. Perfect for beginners.</div>
+          <div class="stock-bar"><div class="stock-dot in"></div><span class="stock-text in">In stock — digital download</span></div>
+          <div class="shop-footer">
+            <div class="shop-price">R79 <small>PDF download</small></div>
+            <button class="shop-add" onclick="addToCart('Healthy Eating Starter Kit','guideline',79,'🍽️','PDF download')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <footer>
+    <div class="footer-top">
+      <div><div class="footer-logo"><span class="footer-logo-text">i<span>Nutrition</span></span></div><div class="footer-tagline">Registered dietitians and lactation specialists. In-person in Cape Town, and virtually nationwide.</div></div>
+      <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a onclick="openConsultModal('Dietitian Consultation')">Dietitian Consult</a></li><li><a onclick="openConsultModal('Lactation Consultation')">Lactation Consult</a></li><li><a onclick="showPage('shop')">Meal Plans</a></li></ul></div>
+      <div><div class="footer-heading">Navigate</div><ul class="footer-links"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('videos')">Videos</a></li><li><a onclick="showPage('contact')">Contact</a></li></ul></div>
+      <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a>hello@inutrition.co.za</a></li><li><a>Cape Town · Nationwide Virtual</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">© 2025 iNutrition. All rights reserved.</span><div class="footer-socials"><div class="social-dot">📘</div><div class="social-dot">📸</div><div class="social-dot">▶️</div></div></div>
+  </footer>
+</div>
+
+<!-- ══════════ CONTACT ══════════ -->
+<div id="page-contact" class="page">
+  <div class="contact-hero">
+    <div class="section-label" style="justify-content:center;">Get in Touch</div>
+    <h1 class="section-title">Let's <em>connect</em></h1>
+    <p class="section-desc" style="margin:0 auto;">Book a consultation, ask a question, or tell us about your health goals. Available in person and virtually.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <div class="contact-info-item"><div class="contact-icon">📍</div><div><div class="contact-info-label">Location</div><div class="contact-info-val">Cape Town, South Africa</div><div class="contact-info-sub">In-person consultations available in Cape Town</div></div></div>
+      <div class="contact-info-item"><div class="contact-icon">🖥️</div><div><div class="contact-info-label">Virtual Consultations</div><div class="contact-info-val">Available Nationwide</div><div class="contact-info-sub">Secure video call — accessible from anywhere in South Africa</div></div></div>
+      <div class="contact-info-item"><div class="contact-icon">✉️</div><div><div class="contact-info-label">Email</div><div class="contact-info-val">hello@inutrition.co.za</div><div class="contact-info-sub">We reply within 1 business day</div></div></div>
+      <div class="contact-info-item"><div class="contact-icon">📞</div><div><div class="contact-info-label">Phone / WhatsApp</div><div class="contact-info-val">+27 (0)21 000 0000</div><div class="contact-info-sub">Mon–Fri, 8am–5pm</div></div></div>
+      <div class="contact-info-item"><div class="contact-icon">💳</div><div><div class="contact-info-label">Medical Aid</div><div class="contact-info-val">Most medical aids accepted</div><div class="contact-info-sub">Invoiced after your session — you claim from your medical aid directly</div></div></div>
+    </div>
+    <div class="contact-form-card">
+      <div class="form-title">Request an Appointment</div>
+      <div class="form-sub">No payment required upfront. Consultations are invoiced after your session and claimable from medical aid.</div>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith"/></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="jane@example.com"/></div>
+      <div class="form-group"><label>Phone / WhatsApp</label><input type="tel" placeholder="+27 ..."/></div>
+      <div class="form-group"><label>Service</label>
+        <select>
+          <option value="">Select a service...</option>
+          <option>Dietitian Consultation — In-person (Cape Town)</option>
+          <option>Dietitian Consultation — Virtual</option>
+          <option>Lactation Consultation — In-person (Cape Town)</option>
+          <option>Lactation Consultation — Virtual</option>
+          <option>Personalised Meal Plan</option>
+          <option>General enquiry</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Preferred time</label><input type="text" placeholder="e.g. Weekday mornings, or a specific date"/></div>
+      <div class="form-group"><label>Tell us about your goals</label><textarea rows="3" placeholder="Share a bit about what you're hoping to achieve..."></textarea></div>
+      <button class="form-submit" onclick="handleContactSubmit(this)">Send Request →</button>
+    </div>
+  </div>
+
+  <div class="faq-strip">
+    <div class="faq-inner">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title" style="font-size:38px;margin-bottom:40px;">Common <em>Questions</em></h2>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do virtual consultations work?</div><div class="faq-a">After you book, we send you a secure video call link. No software to install — it works in your browser. Sessions are the same length and quality as in-person visits, and you receive your plan digitally afterward.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How does payment work for consultations?</div><div class="faq-a">Consultations are not paid online. After your session, we send you a detailed invoice which you submit to your medical aid for reimbursement. Most major South African medical aids cover registered dietitian consultations.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How long is an initial dietitian session?</div><div class="faq-a">Initial sessions are typically 60 minutes — enough time for a thorough assessment of your health history, eating habits, and goals before building your personalised plan.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How does delivery and pick-up work for supplements?</div><div class="faq-a">At checkout you can choose delivery (R80 flat rate nationwide) or free pick-up at our Cape Town location. We'll contact you to confirm the details. For out-of-stock items, click "Request Item" and we'll order it in and contact you when it arrives.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">How do I receive my meal plans and PDF guides?</div><div class="faq-a">Digital products are sent to your email address immediately after payment is confirmed. No shipping, no waiting.</div></div>
+      <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Can I get a meal plan without a consultation?</div><div class="faq-a">Yes — our pre-made meal plans and guidelines are available directly from the Shop. For a fully personalised plan built around your specific health history, we recommend booking a consultation first.</div></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-top">
+      <div><div class="footer-logo"><span class="footer-logo-text">i<span>Nutrition</span></span></div><div class="footer-tagline">Registered dietitians and lactation specialists. In-person in Cape Town, and virtually nationwide across South Africa.</div></div>
+      <div><div class="footer-heading">Services</div><ul class="footer-links"><li><a onclick="openConsultModal('Dietitian Consultation')">Dietitian Consult</a></li><li><a onclick="openConsultModal('Lactation Consultation')">Lactation Consult</a></li><li><a onclick="showPage('shop')">Meal Plans</a></li></ul></div>
+      <div><div class="footer-heading">Navigate</div><ul class="footer-links"><li><a onclick="showPage('home')">Home</a></li><li><a onclick="showPage('videos')">Videos</a></li><li><a onclick="showPage('shop')">Shop</a></li></ul></div>
+      <div><div class="footer-heading">Contact</div><ul class="footer-links"><li><a>hello@inutrition.co.za</a></li><li><a>Cape Town · Nationwide Virtual</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span class="footer-copy">© 2025 iNutrition. All rights reserved.</span><div class="footer-socials"><div class="social-dot">📘</div><div class="social-dot">📸</div><div class="social-dot">▶️</div></div></div>
+  </footer>
+</div>
+
+<script>
+// ── STATE ──
+let cart = [];
+let shippingMethod = 'delivery';
+const SHIPPING_FEE = 80;
+
+// ── PAGES ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const el = document.getElementById('nav-' + name);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── CART ──
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+  renderCart();
+}
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+}
+function addToCart(name, cat, price, icon, meta) {
+  const existing = cart.find(i => i.name === name);
+  if (existing) { existing.qty++; } else { cart.push({ name, cat, price, icon, meta, qty: 1 }); }
+  updateCartCount(); renderCart();
+  showToast('✓ Added — ' + name);
+  openCart();
+}
+function removeFromCart(name) {
+  cart = cart.filter(i => i.name !== name);
+  updateCartCount(); renderCart();
+}
+function changeQty(name, delta) {
+  const item = cart.find(i => i.name === name);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) { removeFromCart(name); return; }
+  updateCartCount(); renderCart();
+}
+function updateCartCount() {
+  const total = cart.reduce((s, i) => s + i.qty, 0);
+  const el = document.getElementById('cartCount');
+  el.textContent = total;
+  total > 0 ? el.classList.add('show') : el.classList.remove('show');
+}
+function getSubtotal() { return cart.reduce((s, i) => s + i.price * i.qty, 0); }
+function hasPhysicalItems() { return cart.some(i => i.cat === 'supplement'); }
+function selectShipping(method) {
+  shippingMethod = method;
+  document.getElementById('shipDelivery').classList.toggle('active', method === 'delivery');
+  document.getElementById('shipPickup').classList.toggle('active', method === 'pickup');
+  document.getElementById('shipNote').textContent = method === 'delivery'
+    ? "We'll email you to confirm your delivery address and estimated arrival."
+    : "We'll email you to confirm your pick-up time at our Cape Town location. Free of charge.";
+  renderTotals();
+}
+function renderTotals() {
+  const sub = getSubtotal();
+  const shipFee = hasPhysicalItems() && shippingMethod === 'delivery' ? SHIPPING_FEE : 0;
+  document.getElementById('cartSubtotal').textContent = 'R' + sub.toLocaleString();
+  document.getElementById('cartShipping2').textContent = shipFee === 0 ? (hasPhysicalItems() ? 'Free (pick-up)' : 'N/A') : 'R' + shipFee;
+  document.getElementById('cartTotal').textContent = 'R' + (sub + shipFee).toLocaleString();
+  document.getElementById('shippingRow').style.display = hasPhysicalItems() ? '' : 'none';
+}
+function renderCart() {
+  const container = document.getElementById('cartItems');
+  const shippingBlock = document.getElementById('cartShippingBlock');
+  const footerBlock = document.getElementById('cartFooter');
+  if (cart.length === 0) {
+    container.innerHTML = '<div class="cart-empty"><div class="cart-empty-icon">🛒</div><p>Your cart is empty</p></div>';
+    shippingBlock.style.display = 'none'; footerBlock.style.display = 'none'; return;
+  }
+  container.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${item.icon}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-meta">${item.meta}</div>
+        <div class="cart-item-bottom">
+          <div class="cart-item-price">R${(item.price * item.qty).toLocaleString()}</div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="qty-ctrl">
+              <button class="qty-btn" onclick="changeQty('${item.name}',-1)">−</button>
+              <span class="qty-num">${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty('${item.name}',1)">+</button>
+            </div>
+            <button class="remove-item" onclick="removeFromCart('${item.name}')">×</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+  shippingBlock.style.display = hasPhysicalItems() ? '' : 'none';
+  footerBlock.style.display = '';
+  renderTotals();
+}
+function handleCheckout() {
+  const btn = document.querySelector('.cart-checkout');
+  btn.textContent = '⏳ Redirecting to Yoco...';
+  btn.disabled = true;
+  setTimeout(() => { showToast('💳 In production this opens Yoco payment'); btn.textContent = 'Pay with Yoco →'; btn.disabled = false; }, 2000);
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── MODALS ──
+function openRequestModal(productName) {
+  document.getElementById('modalTitle').textContent = 'Request: ' + productName;
+  document.getElementById('requestModal').classList.add('open');
+}
+function openConsultModal(service) {
+  document.getElementById('consultModalTitle').textContent = service || 'Request an Appointment';
+  document.getElementById('consultModal').classList.add('open');
+}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function submitRequest() {
+  if (!document.getElementById('reqName').value || !document.getElementById('reqEmail').value) { showToast('Please fill in your name and email'); return; }
+  closeModal('requestModal');
+  showToast("✓ Request sent! We'll contact you when your item is ready.");
+}
+function submitConsult() {
+  if (!document.getElementById('cName').value || !document.getElementById('cEmail').value) { showToast('Please fill in your name and email'); return; }
+  closeModal('consultModal');
+  showToast("✓ Appointment request sent! We'll confirm within 1 business day.");
+}
+
+// ── SHOP FILTER ──
+function filterShop(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.shop-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+}
+
+// ── FAQ ──
+function toggleFaq(el) { el.classList.toggle('open'); }
+
+// ── CONTACT ──
+function handleContactSubmit(btn) {
+  btn.textContent = '✓ Request Sent!';
+  btn.style.background = 'var(--green-light)';
+  btn.disabled = true;
+  showToast("✓ We'll be in touch within 1 business day.");
+}
+</script>
+</body>
+</html>
