@@ -741,67 +741,197 @@ footer{background:var(--text);color:rgba(255,255,255,0.7);padding:64px 80px 32px
       @media(max-width:768px){ .playlist-grid { grid-template-columns: repeat(2,1fr); } }
     </style>
 
-    <!-- ALL VIDEOS -->
-    <div style="margin-bottom:20px;">
+
+    <div style="margin-bottom:20px;margin-top:40px;">
       <div class="section-label">All Videos</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;">iNutrition <em style="color:var(--green);font-style:italic;">Full Library</em></h3>
     </div>
     <div class="playlist-grid">
       <a class="playlist-card" href="https://www.youtube.com/playlist?list=PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg" target="_blank">
-        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="iNutrition videos" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
-        <div class="playlist-info"><div class="playlist-info-title">iNutrition Full Video Library</div><div class="playlist-info-sub">All videos · Click to watch on YouTube</div></div>
+        <div class="playlist-thumb">
+          <img src="https://i.ytimg.com/vi/$(firstvid_PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg)/mqdefault.jpg"
+               onerror="this.style.display='none'"
+               alt="Full Library" loading="lazy"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,var(--green-pale),var(--green-mid));display:flex;align-items:center;justify-content:center;z-index:-1;">
+            <span style="font-size:48px;opacity:0.3;">▶</span>
+          </div>
+          <div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Full Library Playlist</div>
+          <div class="playlist-info-sub">All videos in one place · Opens on YouTube</div>
+        </div>
       </a>
-      <a class="playlist-card" href="https://www.youtube.com/@inutrition_za" target="_blank">
-        <div class="playlist-thumb" style="background:linear-gradient(135deg,var(--green-pale),var(--green-mid));"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:48px;color:rgba(58,107,74,0.2);">▶</div></div>
-        <div class="playlist-info"><div class="playlist-info-title">Subscribe to iNutrition on YouTube</div><div class="playlist-info-sub">New videos added regularly</div></div>
+      <a class="playlist-card" href="https://www.youtube.com/@inutrition_za" target="_blank" style="background:var(--green-pale);border:1px dashed var(--green-mid);">
+        <div class="playlist-thumb" style="background:linear-gradient(135deg,var(--green-pale),var(--green-mid));">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:36px;">📺</span>
+          </div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Watch all on YouTube</div>
+          <div class="playlist-info-sub">Subscribe · @inutrition_za</div>
+        </div>
       </a>
     </div>
-
-    <!-- BREASTFEEDING -->
-    <div style="margin-bottom:20px;">
+    <div style="margin-bottom:20px;margin-top:40px;">
       <div class="section-label">Lactation</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;">Breastfeeding 101 | <em style="color:var(--green);font-style:italic;">Expert Tips for a Confident Start</em></h3>
     </div>
     <div class="playlist-grid">
-      <a class="playlist-card" href="https://youtube.com/playlist?list=PLXiivHls1baohZwsZm0eSKQS0P5XEdN0s" target="_blank">
-        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Breastfeeding playlist" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
-        <div class="playlist-info"><div class="playlist-info-title">Breastfeeding 101 Playlist</div><div class="playlist-info-sub">Click to watch on YouTube</div></div>
+      <a class="playlist-card" href="https://www.youtube.com/playlist?list=PLXiivHls1baohZwsZm0eSKQS0P5XEdN0s" target="_blank">
+        <div class="playlist-thumb">
+          <img src="https://i.ytimg.com/vi/$(firstvid_PLXiivHls1baohZwsZm0eSKQS0P5XEdN0s)/mqdefault.jpg"
+               onerror="this.style.display='none'"
+               alt="Breastfeeding" loading="lazy"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,var(--green-pale),var(--green-mid));display:flex;align-items:center;justify-content:center;z-index:-1;">
+            <span style="font-size:48px;opacity:0.3;">▶</span>
+          </div>
+          <div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Breastfeeding Playlist</div>
+          <div class="playlist-info-sub">Expert breastfeeding guidance · Opens on YouTube</div>
+        </div>
+      </a>
+      <a class="playlist-card" href="https://www.youtube.com/@inutrition_za" target="_blank" style="background:var(--green-pale);border:1px dashed var(--green-mid);">
+        <div class="playlist-thumb" style="background:linear-gradient(135deg,var(--green-pale),var(--green-mid));">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:36px;">📺</span>
+          </div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Watch all on YouTube</div>
+          <div class="playlist-info-sub">Subscribe · @inutrition_za</div>
+        </div>
       </a>
     </div>
-
-    <!-- FOOD SONGS -->
-    <div style="margin-bottom:20px;">
+    <div style="margin-bottom:20px;margin-top:40px;">
+      <div class="section-label">Recipes</div>
+      <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"><em style="color:var(--green);font-style:italic;">Recipes</em></h3>
+    </div>
+    <div class="playlist-grid">
+      <a class="playlist-card" href="https://www.youtube.com/playlist?list=PLXiivHls1bao4RKohwb1EMb_5jR9exJOg" target="_blank">
+        <div class="playlist-thumb">
+          <img src="https://i.ytimg.com/vi/$(firstvid_PLXiivHls1bao4RKohwb1EMb_5jR9exJOg)/mqdefault.jpg"
+               onerror="this.style.display='none'"
+               alt="Recipes" loading="lazy"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,var(--green-pale),var(--green-mid));display:flex;align-items:center;justify-content:center;z-index:-1;">
+            <span style="font-size:48px;opacity:0.3;">▶</span>
+          </div>
+          <div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Recipes Playlist</div>
+          <div class="playlist-info-sub">Healthy and delicious recipe ideas · Opens on YouTube</div>
+        </div>
+      </a>
+      <a class="playlist-card" href="https://www.youtube.com/@inutrition_za" target="_blank" style="background:var(--green-pale);border:1px dashed var(--green-mid);">
+        <div class="playlist-thumb" style="background:linear-gradient(135deg,var(--green-pale),var(--green-mid));">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:36px;">📺</span>
+          </div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Watch all on YouTube</div>
+          <div class="playlist-info-sub">Subscribe · @inutrition_za</div>
+        </div>
+      </a>
+    </div>
+    <div style="margin-bottom:20px;margin-top:40px;">
       <div class="section-label">Kids & Family</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"><em style="color:var(--green);font-style:italic;">Food Song Series</em></h3>
     </div>
     <div class="playlist-grid">
-      <a class="playlist-card" href="https://youtube.com/playlist?list=PLXiivHls1baq16Ott89XppIkh72F0mB83" target="_blank">
-        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Food Song Series" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
-        <div class="playlist-info"><div class="playlist-info-title">Food Song Series Playlist</div><div class="playlist-info-sub">Click to watch on YouTube</div></div>
+      <a class="playlist-card" href="https://www.youtube.com/playlist?list=PLXiivHls1baq16Ott89XppIkh72F0mB83" target="_blank">
+        <div class="playlist-thumb">
+          <img src="https://i.ytimg.com/vi/$(firstvid_PLXiivHls1baq16Ott89XppIkh72F0mB83)/mqdefault.jpg"
+               onerror="this.style.display='none'"
+               alt="Food Songs" loading="lazy"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,var(--green-pale),var(--green-mid));display:flex;align-items:center;justify-content:center;z-index:-1;">
+            <span style="font-size:48px;opacity:0.3;">▶</span>
+          </div>
+          <div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Food Songs Playlist</div>
+          <div class="playlist-info-sub">Fun food songs for the whole family · Opens on YouTube</div>
+        </div>
+      </a>
+      <a class="playlist-card" href="https://www.youtube.com/@inutrition_za" target="_blank" style="background:var(--green-pale);border:1px dashed var(--green-mid);">
+        <div class="playlist-thumb" style="background:linear-gradient(135deg,var(--green-pale),var(--green-mid));">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:36px;">📺</span>
+          </div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Watch all on YouTube</div>
+          <div class="playlist-info-sub">Subscribe · @inutrition_za</div>
+        </div>
       </a>
     </div>
-
-    <!-- NEURODIVERGENCE -->
-    <div style="margin-bottom:20px;">
+    <div style="margin-bottom:20px;margin-top:40px;">
       <div class="section-label">Neurodivergence</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"><em style="color:var(--green);font-style:italic;">Neurodivergence & Nutrition</em></h3>
     </div>
     <div class="playlist-grid">
-      <a class="playlist-card" href="https://youtube.com/playlist?list=PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg" target="_blank">
-        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Neurodivergence playlist" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
-        <div class="playlist-info"><div class="playlist-info-title">Neurodivergence & Nutrition Playlist</div><div class="playlist-info-sub">Click to watch on YouTube</div></div>
+      <a class="playlist-card" href="https://www.youtube.com/playlist?list=PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg" target="_blank">
+        <div class="playlist-thumb">
+          <img src="https://i.ytimg.com/vi/$(firstvid_PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg)/mqdefault.jpg"
+               onerror="this.style.display='none'"
+               alt="Neurodivergence" loading="lazy"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,var(--green-pale),var(--green-mid));display:flex;align-items:center;justify-content:center;z-index:-1;">
+            <span style="font-size:48px;opacity:0.3;">▶</span>
+          </div>
+          <div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Neurodivergence Playlist</div>
+          <div class="playlist-info-sub">Nutrition support for neurodivergent individuals · Opens on YouTube</div>
+        </div>
+      </a>
+      <a class="playlist-card" href="https://www.youtube.com/@inutrition_za" target="_blank" style="background:var(--green-pale);border:1px dashed var(--green-mid);">
+        <div class="playlist-thumb" style="background:linear-gradient(135deg,var(--green-pale),var(--green-mid));">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:36px;">📺</span>
+          </div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Watch all on YouTube</div>
+          <div class="playlist-info-sub">Subscribe · @inutrition_za</div>
+        </div>
       </a>
     </div>
-
-    <!-- TIPS TRICKS MYTHS -->
-    <div style="margin-bottom:20px;">
+    <div style="margin-bottom:20px;margin-top:40px;">
       <div class="section-label">Education</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"><em style="color:var(--green);font-style:italic;">Tips, Tricks & Myths</em></h3>
     </div>
     <div class="playlist-grid">
-      <a class="playlist-card" href="https://youtube.com/playlist?list=PLXiivHls1bar5_JXlkKto8RLx1OrzX8J3" target="_blank">
-        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Tips Tricks Myths playlist" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
-        <div class="playlist-info"><div class="playlist-info-title">Tips, Tricks & Myths Playlist</div><div class="playlist-info-sub">Click to watch on YouTube</div></div>
+      <a class="playlist-card" href="https://www.youtube.com/playlist?list=PLXiivHls1bar5_JXlkKto8RLx1OrzX8J3" target="_blank">
+        <div class="playlist-thumb">
+          <img src="https://i.ytimg.com/vi/$(firstvid_PLXiivHls1bar5_JXlkKto8RLx1OrzX8J3)/mqdefault.jpg"
+               onerror="this.style.display='none'"
+               alt="Tips & Myths" loading="lazy"/>
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,var(--green-pale),var(--green-mid));display:flex;align-items:center;justify-content:center;z-index:-1;">
+            <span style="font-size:48px;opacity:0.3;">▶</span>
+          </div>
+          <div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Tips & Myths Playlist</div>
+          <div class="playlist-info-sub">Busting myths and sharing practical tips · Opens on YouTube</div>
+        </div>
+      </a>
+      <a class="playlist-card" href="https://www.youtube.com/@inutrition_za" target="_blank" style="background:var(--green-pale);border:1px dashed var(--green-mid);">
+        <div class="playlist-thumb" style="background:linear-gradient(135deg,var(--green-pale),var(--green-mid));">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:36px;">📺</span>
+          </div>
+        </div>
+        <div class="playlist-info">
+          <div class="playlist-info-title">Watch all on YouTube</div>
+          <div class="playlist-info-sub">Subscribe · @inutrition_za</div>
+        </div>
       </a>
     </div>
 
