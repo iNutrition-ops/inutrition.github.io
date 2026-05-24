@@ -684,49 +684,125 @@ footer{background:var(--text);color:rgba(255,255,255,0.7);padding:64px 80px 32px
       <p style="font-size:15px;color:var(--text-light);font-weight:300;margin-top:8px;">80+ videos covering nutrition, lactation, pregnancy, weight management and more. Click any thumbnail to watch.</p>
     </div>
 
-    <!-- PLAYLIST 1: ALL VIDEOS -->
-    <div style="margin-bottom:16px;">
+    <!-- PLAYLIST CARDS -->
+    <style>
+      .playlist-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+        text-decoration: none;
+        display: block;
+      }
+      .playlist-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+      .playlist-thumb {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%;
+        background: var(--green-pale);
+        overflow: hidden;
+      }
+      .playlist-thumb img {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        object-fit: cover;
+      }
+      .playlist-thumb-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .playlist-card:hover .playlist-thumb-overlay { opacity: 1; }
+      .playlist-play-btn {
+        width: 52px; height: 52px;
+        background: rgba(255,255,255,0.95);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .playlist-play-btn::after {
+        content: '';
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-left: 16px solid var(--green);
+        margin-left: 3px;
+      }
+      .playlist-info { padding: 14px 16px; }
+      .playlist-info-title { font-family: var(--font-serif); font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.4; }
+      .playlist-info-sub { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+      .playlist-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 56px; }
+      @media(max-width:768px){ .playlist-grid { grid-template-columns: repeat(2,1fr); } }
+    </style>
+
+    <!-- ALL VIDEOS -->
+    <div style="margin-bottom:20px;">
       <div class="section-label">All Videos</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;">iNutrition <em style="color:var(--green);font-style:italic;">Full Library</em></h3>
     </div>
-    <div id="playlist-1" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px;"></div>
+    <div class="playlist-grid">
+      <a class="playlist-card" href="https://www.youtube.com/playlist?list=PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg" target="_blank">
+        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="iNutrition videos" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
+        <div class="playlist-info"><div class="playlist-info-title">iNutrition Full Video Library</div><div class="playlist-info-sub">All videos · Click to watch on YouTube</div></div>
+      </a>
+      <a class="playlist-card" href="https://www.youtube.com/@inutrition_za" target="_blank">
+        <div class="playlist-thumb" style="background:linear-gradient(135deg,var(--green-pale),var(--green-mid));"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:48px;color:rgba(58,107,74,0.2);">▶</div></div>
+        <div class="playlist-info"><div class="playlist-info-title">Subscribe to iNutrition on YouTube</div><div class="playlist-info-sub">New videos added regularly</div></div>
+      </a>
+    </div>
 
-    <!-- PLAYLIST 2: BREASTFEEDING -->
-    <div style="margin-bottom:16px;">
+    <!-- BREASTFEEDING -->
+    <div style="margin-bottom:20px;">
       <div class="section-label">Lactation</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;">Breastfeeding 101 | <em style="color:var(--green);font-style:italic;">Expert Tips for a Confident Start</em></h3>
     </div>
-    <div id="playlist-2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px;"></div>
+    <div class="playlist-grid">
+      <a class="playlist-card" href="https://youtube.com/playlist?list=PLXiivHls1baohZwsZm0eSKQS0P5XEdN0s" target="_blank">
+        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Breastfeeding playlist" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
+        <div class="playlist-info"><div class="playlist-info-title">Breastfeeding 101 Playlist</div><div class="playlist-info-sub">Click to watch on YouTube</div></div>
+      </a>
+    </div>
 
-    <!-- PLAYLIST 3: FOOD SONGS -->
-    <div style="margin-bottom:16px;">
+    <!-- FOOD SONGS -->
+    <div style="margin-bottom:20px;">
       <div class="section-label">Kids & Family</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"><em style="color:var(--green);font-style:italic;">Food Song Series</em></h3>
     </div>
-    <div id="playlist-3" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px;"></div>
+    <div class="playlist-grid">
+      <a class="playlist-card" href="https://youtube.com/playlist?list=PLXiivHls1baq16Ott89XppIkh72F0mB83" target="_blank">
+        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Food Song Series" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
+        <div class="playlist-info"><div class="playlist-info-title">Food Song Series Playlist</div><div class="playlist-info-sub">Click to watch on YouTube</div></div>
+      </a>
+    </div>
 
-    <!-- PLAYLIST 4: NEURODIVERGENCE -->
-    <div style="margin-bottom:16px;">
+    <!-- NEURODIVERGENCE -->
+    <div style="margin-bottom:20px;">
       <div class="section-label">Neurodivergence</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"><em style="color:var(--green);font-style:italic;">Neurodivergence & Nutrition</em></h3>
     </div>
-    <div id="playlist-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px;"></div>
+    <div class="playlist-grid">
+      <a class="playlist-card" href="https://youtube.com/playlist?list=PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg" target="_blank">
+        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Neurodivergence playlist" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
+        <div class="playlist-info"><div class="playlist-info-title">Neurodivergence & Nutrition Playlist</div><div class="playlist-info-sub">Click to watch on YouTube</div></div>
+      </a>
+    </div>
 
-    <!-- PLAYLIST 5: TIPS TRICKS MYTHS -->
-    <div style="margin-bottom:16px;">
+    <!-- TIPS TRICKS MYTHS -->
+    <div style="margin-bottom:20px;">
       <div class="section-label">Education</div>
       <h3 style="font-family:var(--font-serif);font-size:28px;font-weight:400;color:var(--text);margin-bottom:24px;"><em style="color:var(--green);font-style:italic;">Tips, Tricks & Myths</em></h3>
     </div>
-    <div id="playlist-5" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:56px;"></div>
-
-    <!-- VIDEO MODAL -->
-    <div id="videoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:700;align-items:center;justify-content:center;">
-      <div style="position:relative;width:90%;max-width:900px;">
-        <button onclick="closeVideo()" style="position:absolute;top:-44px;right:0;background:none;border:none;color:white;font-size:32px;cursor:pointer;line-height:1;">×</button>
-        <div style="position:relative;padding-bottom:56.25%;height:0;border-radius:var(--radius-lg);overflow:hidden;">
-          <iframe id="videoFrame" src="" width="100%" height="100%" style="position:absolute;top:0;left:0;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-      </div>
+    <div class="playlist-grid">
+      <a class="playlist-card" href="https://youtube.com/playlist?list=PLXiivHls1bar5_JXlkKto8RLx1OrzX8J3" target="_blank">
+        <div class="playlist-thumb"><img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/hqdefault.jpg" alt="Tips Tricks Myths playlist" loading="lazy"/><div class="playlist-thumb-overlay"><div class="playlist-play-btn"></div></div></div>
+        <div class="playlist-info"><div class="playlist-info-title">Tips, Tricks & Myths Playlist</div><div class="playlist-info-sub">Click to watch on YouTube</div></div>
+      </a>
     </div>
 
     <!-- SUBSCRIBE CTA -->
@@ -1167,53 +1243,6 @@ function filterShop(cat, btn) {
 
 // ── FAQ ──
 function toggleFaq(el) { el.classList.toggle('open'); }
-
-// ── YOUTUBE THUMBNAILS ──
-const playlists = [
-  { id: 'playlist-1', listId: 'PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg' },
-  { id: 'playlist-2', listId: 'PLXiivHls1baohZwsZm0eSKQS0P5XEdN0s' },
-  { id: 'playlist-3', listId: 'PLXiivHls1baq16Ott89XppIkh72F0mB83' },
-  { id: 'playlist-4', listId: 'PLXiivHls1baqJ3rxHTgfMgYhIF3KS9fzg' },
-  { id: 'playlist-5', listId: 'PLXiivHls1bar5_JXlkKto8RLx1OrzX8J3' },
-];
-
-async function loadPlaylistThumbnails() {
-  for (const pl of playlists) {
-    const container = document.getElementById(pl.id);
-    if (!container) continue;
-    try {
-      const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/playlist?list=${pl.listId}&format=json`);
-    } catch(e) {}
-
-    // Use noembed to get playlist info — fallback to showing embed button
-    const url = `https://noembed.com/embed?url=https://www.youtube.com/playlist?list=${pl.listId}`;
-
-    // Since we can't fetch individual video IDs without API key,
-    // render a clean playlist thumbnail grid using the playlist embed
-    container.innerHTML = `
-      <div style="grid-column:1/-1;border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
-        <iframe
-          src="https://www.youtube.com/embed/videoseries?list=${pl.listId}&rel=0&modestbranding=1"
-          width="100%" height="420" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen style="display:block;">
-        </iframe>
-      </div>`;
-  }
-}
-
-function openVideo(videoId, title) {
-  document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-  const modal = document.getElementById('videoModal');
-  modal.style.display = 'flex';
-}
-
-function closeVideo() {
-  document.getElementById('videoFrame').src = '';
-  document.getElementById('videoModal').style.display = 'none';
-}
-
-document.addEventListener('DOMContentLoaded', loadPlaylistThumbnails);
 
 // ── CONTACT ──
 function handleContactSubmit(btn) {
