@@ -93,8 +93,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(250,250,248,
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 /* HERO */
-.hero{padding-top:72px;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
-.hero-left{display:flex;flex-direction:column;justify-content:center;padding:80px 60px 80px 80px;position:relative;z-index:2;}
+.hero{padding-top:72px;min-height:0;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden;}
+.hero-left{display:flex;flex-direction:column;justify-content:center;padding:48px 60px 48px 80px;position:relative;z-index:2;}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--green);margin-bottom:28px;}
 .hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--green);}
 .hero-title{font-family:var(--font-serif);font-size:clamp(52px,5.5vw,80px);line-height:1.08;font-weight:300;color:var(--text);margin-bottom:24px;letter-spacing:-0.5px;}
@@ -469,6 +469,7 @@ footer{background:var(--text);color:rgba(255,255,255,0.7);padding:64px 80px 32px
         <div class="service-name">Lactation Consultations</div>
         <div class="service-desc">Expert support for new and expecting mothers. We guide you through breastfeeding, latching, milk supply, and postpartum nutrition with compassion — from the comfort of your home.</div>
         <div class="service-virtual-tag">🖥️ In-person & virtual available</div>
+        <div class="service-virtual-tag" style="background:#fff3e0;color:#b07d2a;">🏠 Home visits available if in the area</div>
         <a class="service-link" onclick="openConsultModal('Lactation Consultation')">Request Appointment →</a>
       </div>
       <div class="service-card">
